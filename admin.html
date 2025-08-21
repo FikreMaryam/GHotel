@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>GHotel Admin - Reservations</title>
+        <link rel="stylesheet" href="style.css">
+        <style>
+            .admin-table {
+                width: 90%;
+                margin: 40px auto;
+                border-collapse: collapse;
+                background: #fffbe6;
+                box-shadow: 0 4px 16px rgba(60,40,20,0.10);
+            }
+            .admin-table th, .admin-table td {
+                border: 1px solid #c2b280;
+                padding: 12px;
+                text-align: left;
+            }
+            .admin-table th {
+                background: #e5d2a3;
+                color: #6e4b1b;
+                font-family: 'Georgia', serif;
+            }
+            .admin-table td {
+                color: #3a2c1a;
+            }
+            .admin-header {
+                text-align: center;
+                margin-top: 32px;
+                color: #8b6f3c;
+                font-family: 'Georgia', serif;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>GHotel Admin</h1>
+        </header>
+        <h2 class="admin-header">Reservations</h2>
+        <table class="admin-table" id="reservationsTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Room Type</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Reservations will be loaded here -->
+            </tbody>
+        </table>
+        <script>
+        async function loadReservations() {
+            const res = await fetch('/admin/reservations');
+            const data = await res.json();
+            const tbody = document.querySelector('#reservationsTable tbody');
+            tbody.innerHTML = '';
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${r.name}</td>
+                    <td>${r.email}</td>
+                    <td>${r.checkin}</td>
+                    <td>${r.checkout}</td>
+                    <td>${r.roomtype}</td>
+                    <td>${r.time}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        loadReservations();
+        </script>
+    </body>
+</html>

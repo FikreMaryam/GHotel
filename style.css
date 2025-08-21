@@ -1,16 +1,204 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
+    font-family: 'Georgia', 'Times New Roman', serif;
 }
 
-body{
+body {
+    background: #f5ecd7 url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+    color: #3a2c1a;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background: #c2b280;
+    padding: 32px 0 16px 0;
+    text-align: center;
+    border-bottom: 4px solid #8b6f3c;
+    box-shadow: 0 2px 8px rgba(60, 40, 20, 0.08);
+}
+
+header h1 {
+    font-family: 'Georgia', serif;
+    font-size: 3rem;
+    letter-spacing: 2px;
+    color: #6e4b1b;
+    text-shadow: 1px 1px 0 #e5d2a3;
+    margin-bottom: 8px;
+}
+
+nav ul {
+    list-style: none;
+    display: inline-flex;
+    gap: 32px;
+    margin-top: 8px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #3a2c1a;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+nav a:hover {
+    background: #e5d2a3;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #e5d2a3 60%, #c2b280 100%);
+    padding: 64px 0;
+    text-align: center;
+    border-bottom: 2px solid #8b6f3c;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    color: #6e4b1b;
+    margin-bottom: 16px;
+    font-family: 'Georgia', serif;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    margin-bottom: 24px;
+    color: #3a2c1a;
+}
+
+.btn {
+    background: #8b6f3c;
+    color: #fff;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(60, 40, 20, 0.08);
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background: #6e4b1b;
+}
+
+/* About Section */
+.about {
+    padding: 48px 16px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 2rem;
+    color: #6e4b1b;
+    margin-bottom: 12px;
+    font-family: 'Georgia', serif;
+}
+
+.about p {
+    font-size: 1.1rem;
+    color: #3a2c1a;
+    line-height: 1.7;
+}
+
+/* Rooms Section */
+.rooms {
+    background: #e5d2a3;
+    padding: 48px 16px;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 4px 16px rgba(60, 40, 20, 0.06);
+    max-width: 900px;
+    margin: 32px auto;
+}
+
+.rooms h2 {
+    font-size: 2rem;
+    color: #6e4b1b;
+    margin-bottom: 24px;
+    font-family: 'Georgia', serif;
+    text-align: center;
+}
+
+.room-list {
     display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+}
+
+.room {
+    background: #fffbe6;
+    border: 2px solid #c2b280;
+    border-radius: 12px;
+    padding: 24px;
+    width: 260px;
+    box-shadow: 0 2px 8px rgba(60, 40, 20, 0.08);
+    text-align: left;
+}
+
+.room h3 {
+    font-size: 1.3rem;
+    color: #8b6f3c;
+    margin-bottom: 8px;
+    font-family: 'Georgia', serif;
+}
+
+.room p {
+    font-size: 1rem;
+    color: #3a2c1a;
+}
+
+/* Contact Section */
+.contact {
+    padding: 48px 16px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.contact h2 {
+    font-size: 2rem;
+    color: #6e4b1b;
+    margin-bottom: 12px;
+    font-family: 'Georgia', serif;
+}
+
+.contact p {
+    font-size: 1.1rem;
+    color: #3a2c1a;
+    margin-bottom: 8px;
+}
+
+/* Footer */
+footer {
+    background: #c2b280;
+    color: #6e4b1b;
+    text-align: center;
+    padding: 16px 0;
+    border-top: 2px solid #8b6f3c;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    margin-top: 32px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .room-list {
+        flex-direction: column;
+        align-items: center;
+    }
+    .rooms {
+        border-radius: 0;
+    }
 }
 
 .clock{
@@ -71,4 +259,95 @@ body{
     width: 6px;
     height: 210px;
     background-color: red;
+}
+
+.slideshow-container {
+    width: 700px;
+    height: 400px;
+    margin: 0 auto 32px auto;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(60,40,20,0.12);
+    background: #e5d2a3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.slide-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.reservation-form {
+    margin: 40px auto 0 auto;
+    max-width: 500px;
+    background: #fffbe6;
+    border: 2px solid #c2b280;
+    border-radius: 12px;
+    padding: 32px 24px;
+    box-shadow: 0 2px 8px rgba(60,40,20,0.08);
+}
+.reservation-form h3 {
+    font-size: 1.5rem;
+    color: #8b6f3c;
+    margin-bottom: 16px;
+    font-family: 'Georgia', serif;
+    text-align: center;
+}
+.reservation-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #3a2c1a;
+    font-size: 1rem;
+}
+.reservation-form input,
+.reservation-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #c2b280;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+.reservation-form button {
+    background: #8b6f3c;
+    color: #fff;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-family: inherit;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+    transition: background 0.2s;
+}
+.reservation-form button:hover {
+    background: #6e4b1b;
+}
+.reservation-fixed-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: #8b6f3c;
+    color: #fff;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 32px;
+    font-size: 1.2rem;
+    font-family: 'Georgia', serif;
+    box-shadow: 0 4px 16px rgba(60,40,20,0.15);
+    cursor: pointer;
+    z-index: 1000;
+    transition: background 0.2s, transform 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.reservation-fixed-btn:hover {
+    background: #6e4b1b;
+    transform: scale(1.05);
 }

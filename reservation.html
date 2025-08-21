@@ -1,0 +1,136 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Reservation - GHotel</title>
+        <link rel="stylesheet" href="style.css">
+        <style>
+            .reservation-page {
+                max-width: 600px;
+                margin: 48px auto;
+                background: #fffbe6;
+                border: 2px solid #c2b280;
+                border-radius: 16px;
+                padding: 40px 32px;
+                box-shadow: 0 4px 16px rgba(60,40,20,0.10);
+            }
+            .reservation-page h2 {
+                font-size: 2rem;
+                color: #8b6f3c;
+                margin-bottom: 24px;
+                font-family: 'Georgia', serif;
+                text-align: center;
+            }
+            .reservation-page label {
+                display: block;
+                margin-bottom: 8px;
+                color: #3a2c1a;
+                font-size: 1rem;
+            }
+            .reservation-page input,
+            .reservation-page select {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 18px;
+                border: 1px solid #c2b280;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-family: inherit;
+            }
+            .reservation-page button {
+                background: #8b6f3c;
+                color: #fff;
+                padding: 12px 0;
+                border: none;
+                border-radius: 8px;
+                font-size: 1.1rem;
+                font-family: inherit;
+                cursor: pointer;
+                width: 100%;
+                margin-top: 8px;
+                transition: background 0.2s;
+            }
+            .reservation-page button:hover {
+                background: #6e4b1b;
+            }
+            .success-message {
+                color: #2e7d32;
+                background: #e5f7e0;
+                border: 1px solid #8bc34a;
+                border-radius: 8px;
+                padding: 12px;
+                margin-bottom: 16px;
+                text-align: center;
+                font-size: 1.1rem;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <h1>GHotel</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="rooms.html">Rooms</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="reservation.html">Reservation</a></li>
+                </ul>
+            </nav>
+        </header>
+        <section class="reservation-page">
+            <h2>Reserve Your Stay</h2>
+            <form id="reservationForm" method="POST">
+                <div id="success" class="success-message" style="display:none;"></div>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <label for="checkin">Check-in Date</label>
+                <input type="date" id="checkin" name="checkin" required>
+                <label for="checkout">Check-out Date</label>
+                <input type="date" id="checkout" name="checkout" required>
+                <label for="roomtype">Room Type</label>
+                <select id="roomtype" name="roomtype" required>
+                    <option value="">Select a room</option>
+                    <option value="deluxe">Deluxe Room</option>
+                    <option value="suite">Suite</option>
+                    <option value="standard">Standard Room</option>
+                </select>
+                <button type="submit">Book Now</button>
+            </form>
+        </section>
+        <footer>
+            <p>&copy; 2024 GHotel. All rights reserved.</p>
+        </footer>
+        <script>
+        // AJAX submit for reservation
+        document.getElementById('reservationForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = {
+                name: form.name.value,
+                email: form.email.value,
+                checkin: form.checkin.value,
+                checkout: form.checkout.value,
+                roomtype: form.roomtype.value
+            };
+            // Use full backend URL
+            const res = await fetch('http://localhost:3000/reserve', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                document.getElementById('success').style.display = 'block';
+                document.getElementById('success').textContent = 'Reservation successful! We look forward to welcoming you.';
+                form.reset();
+            } else {
+                document.getElementById('success').style.display = 'block';
+                document.getElementById('success').textContent = 'Reservation failed. Please try again.';
+            }
+        };
+        </script>
+    </body>
+</html>

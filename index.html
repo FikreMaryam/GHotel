@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta name="author" content="Jomdeveloper">
+        <title>GHotel - Welcome</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <h1>GHotel</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="rooms.html">Rooms</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Hero Section with Slideshow and Description -->
+        <section id="home" class="hero">
+            <div class="slideshow-container">
+                <img id="hotel-slide" src="images/one.jpg" alt="GHotel" class="slide-img">
+            </div>
+            <div class="hotel-description">
+                <h2>Welcome to GHotel</h2>
+                <p>
+                    Discover the charm of history and elegance at GHotel. Nestled in the heart of the city, our hotel blends classic architecture with modern luxury. Enjoy beautifully restored interiors, timeless hospitality, and a tranquil atmosphere that takes you back to a golden era. Whether you are visiting for leisure or business, GHotel promises an unforgettable experience.
+                </p>
+                <a href="rooms.html" class="btn">View Rooms</a>
+            </div>
+
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2024 GHotel. All rights reserved.</p>
+        </footer>
+        <a href="reservation.html" class="reservation-fixed-btn">
+            &#128719; Reserve Now
+        </a>
+        <script>
+        // Simple slideshow script
+        const images = [
+            'images/one.jpg',
+            'images/two.jpg',
+            'images/three.jpg'
+        ];
+        let current = 0;
+        const slide = document.getElementById('hotel-slide');
+        setInterval(() => {
+            current = (current + 1) % images.length;
+            slide.src = images[current];
+        }, 3000);
+        </script>
+    </body>
+</html>
