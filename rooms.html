@@ -1,45 +1,72 @@
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <title>Rooms - GHotel</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <!-- Header -->
-        <header>
-            <h1>GHotel</h1>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="rooms.html">Rooms</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
-        <a href="reservation.html" class="reservation-fixed-btn">&#128719; Reserve Now</a>
-        <!-- Rooms Section -->
-        <section class="rooms">
-            <h2>Our Rooms</h2>
-            <div class="room-list">
-                <div class="room">
-                    <h3>Deluxe Room</h3>
-                    <p>Spacious room with city view, king-size bed, and complimentary breakfast.</p>
-                </div>
-                <div class="room">
-                    <h3>Suite</h3>
-                    <p>Luxury suite with living area, premium amenities, and personalized service.</p>
-                </div>
-                <div class="room">
-                    <h3>Standard Room</h3>
-                    <p>Comfortable room with all essential facilities for a pleasant stay.</p>
-                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Rooms - GHotel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>GHotel</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="rooms.html" class="active">Rooms</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="index.html#reviews">Reviews</a></li>
+                <li><a href="index.html#map">Find Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Fixed Reserve Button -->
+    <a href="reservation.html" class="reservation-fixed-btn">&#128719; Reserve Now</a>
+
+    <!-- Rooms Section -->
+    <section class="rooms">
+        <h2>Our Rooms</h2>
+        <p>Choose from our variety of rooms designed for comfort, luxury, and affordability.</p>
+        
+        <div class="room-list">
+            <!-- Deluxe Room -->
+            <div class="room">
+                <img src="images/deluxe.jpg" alt="Deluxe Room">
+                <h3>Deluxe Room</h3>
+                <p>✨ Spacious room with city view, king-size bed, and complimentary breakfast.</p>
+                <p><strong>Price:</strong> $120/night</p>
             </div>
-        </section>
-        <!-- Footer -->
-        <footer>
-            <p>&copy; 2024 GHotel. All rights reserved.</p>
-        </footer>
-    </body>
+
+            <!-- Suite -->
+            <div class="room">
+                <img src="images/suite.jpg" alt="Luxury Suite">
+                <h3>Suite</h3>
+                <p>🏛️ Luxury suite with living area, premium amenities, and personalized service.</p>
+                <p><strong>Price:</strong> $200/night</p>
+            </div>
+
+            <!-- Standard Room -->
+            <div class="room">
+                <img src="images/standard.jpg" alt="Standard Room">
+                <h3>Standard Room</h3>
+                <p>🛏️ Comfortable room with all essential facilities for a pleasant stay.</p>
+                <p><strong>Price:</strong> $80/night</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 GHotel. All rights reserved.</p>
+        <p>
+            Follow us: 
+            <a href="#">Facebook</a> | 
+            <a href="#">Instagram</a> | 
+            <a href="#">Twitter</a>
+        </p>
+    </footer>
+</body>
 </html>

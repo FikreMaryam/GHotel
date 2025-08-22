@@ -1,49 +1,119 @@
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <meta name="author" content="Jomdeveloper">
-        <title>GHotel - Welcome</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <!-- Header -->
-        <header>
-            <h1>GHotel</h1>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="rooms.html">Rooms</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="author" content="Jomdeveloper">
+    <title>GHotel - Welcome</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>GHotel</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="rooms.html">Rooms</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <!-- Hero Section with Slideshow and Description -->
-        <section id="home" class="hero">
-            <div class="slideshow-container">
-                <img id="hotel-slide" src="images/one.jpg" alt="GHotel" class="slide-img">
-            </div>
-            <div class="hotel-description">
-                <h2>Welcome to GHotel</h2>
-                <p>
-                    Discover the charm of history and elegance at GHotel. Nestled in the heart of the city, our hotel blends classic architecture with modern luxury. Enjoy beautifully restored interiors, timeless hospitality, and a tranquil atmosphere that takes you back to a golden era. Whether you are visiting for leisure or business, GHotel promises an unforgettable experience.
-                </p>
-                <a href="rooms.html" class="btn">View Rooms</a>
-            </div>
+    <!-- Hero Section with Slideshow -->
+    <section id="home" class="hero">
+        <div class="slideshow-container">
+            <img id="hotel-slide" src="images/one.jpg" alt="GHotel" class="slide-img">
+        </div>
+        <div class="hotel-description">
+            <h2>Welcome to GHotel</h2>
+            <p>
+                Discover the charm of history and elegance at GHotel. Nestled in the heart of the city, our hotel blends classic architecture with modern luxury. Enjoy beautifully restored interiors, timeless hospitality, and a tranquil atmosphere that takes you back to a golden era. Whether you are visiting for leisure or business, GHotel promises an unforgettable experience.
+            </p>
+            <a href="rooms.html" class="btn">View Rooms</a>
+        </div>
+    </section>
 
-        </section>
+    <!-- Booking Section -->
+    <section id="booking" class="booking">
+        <h2>Book Your Stay</h2>
+        <form action="reservation.html" method="GET" class="booking-form">
+            <label>Check-in Date:</label>
+            <input type="date" name="checkin" required>
+            <label>Check-out Date:</label>
+            <input type="date" name="checkout" required>
+            <label>Guests:</label>
+            <input type="number" name="guests" min="1" value="1" required>
+            <button type="submit" class="btn">Check Availability</button>
+        </form>
+    </section>
 
-        <!-- Footer -->
-        <footer>
-            <p>&copy; 2024 GHotel. All rights reserved.</p>
-        </footer>
-        <a href="reservation.html" class="reservation-fixed-btn">
-            &#128719; Reserve Now
-        </a>
-        <script>
-        // Simple slideshow script
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <h2>Our Services</h2>
+        <ul>
+            <li>🍽️ Fine Dining Restaurant</li>
+            <li>🏊 Swimming Pool</li>
+            <li>💻 Free WiFi</li>
+            <li>💆 Spa & Wellness</li>
+            <li>🚗 Free Parking</li>
+            <li>🏋️ Gym & Fitness Center</li>
+        </ul>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <h2>Gallery</h2>
+        <div class="gallery-container">
+            <img src="images/one.jpg" alt="Hotel View">
+            <img src="images/two.jpg" alt="Luxury Room">
+            <img src="images/three.jpg" alt="Dining Area">
+            <img src="images/four.jpg" alt="Swimming Pool">
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews">
+        <h2>What Our Guests Say</h2>
+        <div class="review">
+            <p>"Amazing experience! The staff was very friendly and the rooms were spotless."</p>
+            <strong>- Sarah M.</strong>
+        </div>
+        <div class="review">
+            <p>"The food was delicious and the pool was perfect for relaxing afternoons."</p>
+            <strong>- John D.</strong>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section id="map" class="map">
+        <h2>Find Us</h2>
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d..." 
+            width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy">
+        </iframe>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 GHotel. All rights reserved.</p>
+        <p>
+            Follow us: 
+            <a href="#">Facebook</a> | 
+            <a href="#">Instagram</a> | 
+            <a href="#">Twitter</a>
+        </p>
+    </footer>
+
+    <a href="reservation.html" class="reservation-fixed-btn">
+        &#128719; Reserve Now
+    </a>
+
+    <!-- Slideshow Script -->
+    <script>
         const images = [
             'images/one.jpg',
             'images/two.jpg',
@@ -55,6 +125,6 @@
             current = (current + 1) % images.length;
             slide.src = images[current];
         }, 3000);
-        </script>
-    </body>
+    </script>
+</body>
 </html>

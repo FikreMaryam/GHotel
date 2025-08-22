@@ -1,34 +1,100 @@
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <title>About - GHotel</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <!-- Header -->
-        <header>
-            <h1>GHotel</h1>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="rooms.html">Rooms</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
-        <a href="reservation.html" class="reservation-fixed-btn">&#128719; Reserve Now</a>
-        <!-- About Section -->
-        <section class="about">
-            <h2>About Us</h2>
-            <p>
-                GHotel is a historical landmark, offering guests a unique blend of old-world charm and modern comfort. Our story dates back to the early 1900s, and our commitment to hospitality has remained unchanged. From our elegant lobby to our cozy rooms, every detail reflects our dedication to excellence and tradition.
-            </p>
-        </section>
-        <!-- Footer -->
-        <footer>
-            <p>&copy; 2024 GHotel. All rights reserved.</p>
-        </footer>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>About - GHotel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>GHotel</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="rooms.html">Rooms</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="index.html#reviews">Reviews</a></li>
+                <li><a href="index.html#map">Find Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Fixed Reserve Button -->
+    <a href="reservation.html" class="reservation-fixed-btn">&#128719; Reserve Now</a>
+
+    <!-- About Section -->
+    <section class="about">
+        <h2>About Us</h2>
+        <p>
+            Welcome to <strong>GHotel</strong>, a place where history meets modern elegance. Established in the early 1900s, GHotel has been a symbol of timeless charm and warm hospitality. 
+        </p>
+        <p>
+            From our grand lobby with vintage architecture to our thoughtfully designed guest rooms, every corner of GHotel reflects our dedication to comfort and excellence. Whether you are here for business, a family vacation, or a romantic getaway, we promise an unforgettable stay.
+        </p>
+    </section>
+
+    <!-- Mission & Values -->
+    <section class="about mission">
+        <h2>Our Mission</h2>
+        <p>
+            At GHotel, our mission is simple: <em>to create memorable experiences</em> for every guest by blending the elegance of tradition with the comfort of modern living.
+        </p>
+        <h3>Our Values</h3>
+        <ul>
+            <li>🌟 Excellence in Service</li>
+            <li>🤝 Genuine Hospitality</li>
+            <li>🏛️ Preserving Heritage</li>
+            <li>🌱 Sustainability & Care</li>
+        </ul>
+    </section>
+
+    <!-- Facilities -->
+    <section class="about facilities">
+        <h2>Why Choose GHotel?</h2>
+        <div class="room-list">
+            <div class="room">
+                <h3>🍽️ Dining</h3>
+                <p>Fine dining restaurant serving international and local delicacies.</p>
+            </div>
+            <div class="room">
+                <h3>🏊 Relaxation</h3>
+                <p>Luxurious spa, wellness center, and an outdoor pool to unwind.</p>
+            </div>
+            <div class="room">
+                <h3>💼 Business</h3>
+                <p>Fully equipped conference halls and meeting rooms for professionals.</p>
+            </div>
+            <div class="room">
+                <h3>🛎️ Hospitality</h3>
+                <p>Friendly staff ready to make your stay comfortable and memorable.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery">
+        <h2>Glimpse of Our Hotel</h2>
+        <div class="gallery-container">
+            <img src="images/one.jpg" alt="Hotel Front View">
+            <img src="images/two.jpg" alt="Elegant Room">
+            <img src="images/three.jpg" alt="Dining Area">
+            <img src="images/four.jpg" alt="Swimming Pool">
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 GHotel. All rights reserved.</p>
+        <p>
+            Follow us: 
+            <a href="#">Facebook</a> | 
+            <a href="#">Instagram</a> | 
+            <a href="#">Twitter</a>
+        </p>
+    </footer>
+</body>
 </html>
