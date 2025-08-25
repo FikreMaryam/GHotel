@@ -104,33 +104,72 @@
         <footer>
             <p>&copy; 2024 GHotel. All rights reserved.</p>
         </footer>
-        <script>
-        // AJAX submit for reservation
-        document.getElementById('reservationForm').onsubmit = async function(e) {
-            e.preventDefault();
-            const form = e.target;
-            const data = {
-                name: form.name.value,
-                email: form.email.value,
-                checkin: form.checkin.value,
-                checkout: form.checkout.value,
-                roomtype: form.roomtype.value
-            };
-            // Use full backend URL
-            const res = await fetch('http://localhost:3000/reserve', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
-            if (res.ok) {
-                document.getElementById('success').style.display = 'block';
-                document.getElementById('success').textContent = 'Reservation successful! We look forward to welcoming you.';
-                form.reset();
-            } else {
-                document.getElementById('success').style.display = 'block';
-                document.getElementById('success').textContent = 'Reservation failed. Please try again.';
-            }
-        };
-        </script>
+        <!-- ...head and body as you have... -->
+<!-- ...head and body as you have... -->
+<script>
+  // Helper: validate dates
+  function isValidDateRange(checkin, checkout) {
+    const inDate = new Date(checkin);
+    const outDate = new Date(checkout);
+    return (
+      !isNaN(inDate) &&
+      !isNaN(outDate) &&
+      outDate > inDate
+    );
+  }
+
+  const successBox = document.getElementById('success');
+  function showMessage(text, ok = true) {
+    successBox.style.display = 'block';
+    successBox.textContent = text;
+    successBox.style.background = ok ? '#e5f7e0' : '#fdecea';
+    successBox.style.color = ok ? '#2e7d32' : '#b71c1c';
+    successBox.style.border = ok ? '1px solid #8bc34a' : '1px solid #f5c2c7';
+  }
+
+  document.getElementById('reservationForm').onsubmit = async function (e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = {
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
+      checkin: form.checkin.value,
+      checkout: form.checkout.value,
+      roomtype: form.roomtype.value
+    };
+
+    // Basic client-side validation
+    if (!data.name || !data.email || !data.checkin || !data.checkout || !data.roomtype) {
+      showMessage('Please fill in all fields.', false);
+      return;
+    }
+    if (!isValidDateRange(data.checkin, data.checkout)) {
+      showMessage('Check-out must be after check-in.', false);
+      return;
+    }
+
+    try {
+      // Use relative URL so it works in dev & prod (same-origin)
+      const res = await fetch('/reserve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const payload = await res.json().catch(() => ({}));
+      if (res.ok) {
+        showMessage(payload.message || 'Reservation successful! We look forward to welcoming you.', true);
+        form.reset();
+      } else {
+        showMessage(payload.message || 'Reservation failed. Please try again.', false);
+      }
+    } catch (err) {
+      showMessage('Network error. Is the server running?', false);
+      console.error(err);
+    }
+  };
+</script>
+
+
     </body>
 </html>

@@ -1,37 +1,70 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+// server.js
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const XLSX = require("xlsx");
+const fs = require("fs");
+const path = require("path");
+
 const app = express();
 const PORT = 3000;
+const FILE_PATH = "reservations.xlsx";
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(__dirname));
 
-const reservations = [];
+// Serve static files (HTML, CSS, JS, images)
+app.use(express.static(path.join(__dirname)));
 
-app.post('/reserve', (req, res) => {
-    // Log incoming data for debugging
-    console.log('Received reservation:', req.body);
+// 🔹 Load reservations from Excel
+function loadReservations() {
+  if (!fs.existsSync(FILE_PATH)) {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet([]);
+    XLSX.utils.book_append_sheet(wb, ws, "Reservations");
+    XLSX.writeFile(FILE_PATH);
+    return [];
+  }
+  const wb = XLSX.readFile(FILE_PATH);
+  const ws = wb.Sheets["Reservations"];
+  return XLSX.utils.sheet_to_json(ws) || [];
+}
 
-    const { name, email, checkin, checkout, roomtype } = req.body;
+// 🔹 Save reservations to Excel
+function saveReservations(data) {
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet(data);
+  XLSX.utils.book_append_sheet(wb, ws, "Reservations");
+  XLSX.writeFile(wb, FILE_PATH);
+}
 
-    // Check for missing fields
-    if (!name || !email || !checkin || !checkout || !roomtype) {
-        res.status(400).json({ message: 'Missing fields: All fields are required.' });
-        return;
-    }
-    // Save reservation to memory
-    reservations.push({ name, email, checkin, checkout, roomtype, time: new Date().toISOString() });
-    res.status(200).json({ message: 'Reservation successful' });
+// 🔹 API route: Get all reservations
+app.get("/admin/reservations", (req, res) => {
+  const reservations = loadReservations();
+  res.json(reservations);
 });
 
-// Simple admin endpoint (no authentication for demo)
-app.get('/admin/reservations', (req, res) => {
-    res.json(reservations);
+// 🔹 API route: Add new reservation
+app.post("/reserve", (req, res) => {
+  const reservations = loadReservations();
+  const newReservation = {
+    name: req.body.name,
+    email: req.body.email,
+    checkin: req.body.checkin,
+    checkout: req.body.checkout,
+    roomtype: req.body.roomtype,
+    time: new Date().toISOString()
+  };
+  reservations.push(newReservation);
+  saveReservations(reservations);
+  res.json({ success: true, message: "Reservation saved" });
+});
+
+// 🔹 Optional: Catch-all route to serve index.html for /
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.listen(PORT, () => {
-    console.log(`GHotel server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

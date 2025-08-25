@@ -1,78 +1,185 @@
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <title>GHotel Admin - Reservations</title>
-        <link rel="stylesheet" href="style.css">
-        <style>
-            .admin-table {
-                width: 90%;
-                margin: 40px auto;
-                border-collapse: collapse;
-                background: #fffbe6;
-                box-shadow: 0 4px 16px rgba(60,40,20,0.10);
-            }
-            .admin-table th, .admin-table td {
-                border: 1px solid #c2b280;
-                padding: 12px;
-                text-align: left;
-            }
-            .admin-table th {
-                background: #e5d2a3;
-                color: #6e4b1b;
-                font-family: 'Georgia', serif;
-            }
-            .admin-table td {
-                color: #3a2c1a;
-            }
-            .admin-header {
-                text-align: center;
-                margin-top: 32px;
-                color: #8b6f3c;
-                font-family: 'Georgia', serif;
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <h1>GHotel Admin</h1>
-        </header>
-        <h2 class="admin-header">Reservations</h2>
-        <table class="admin-table" id="reservationsTable">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Check-in</th>
-                    <th>Check-out</th>
-                    <th>Room Type</th>
-                    <th>Time</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Reservations will be loaded here -->
-            </tbody>
-        </table>
-        <script>
-        async function loadReservations() {
-            const res = await fetch('/admin/reservations');
-            const data = await res.json();
-            const tbody = document.querySelector('#reservationsTable tbody');
-            tbody.innerHTML = '';
-            data.forEach(r => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${r.name}</td>
-                    <td>${r.email}</td>
-                    <td>${r.checkin}</td>
-                    <td>${r.checkout}</td>
-                    <td>${r.roomtype}</td>
-                    <td>${r.time}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHotel - Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .admin-container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    form {
+      margin-bottom: 32px;
+    }
+    label {
+      display: block;
+      margin: 8px 0 4px;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background: #007b5e;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #005f47;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background: #007b5e;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+    .success {
+      color: green;
+      margin-bottom: 16px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .error {
+      color: red;
+      margin-bottom: 16px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <h1>Reception / Admin Panel</h1>
+
+    <form id="adminForm">
+      <label for="name">Guest Full Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Guest Email</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="checkin">Check-in Date</label>
+      <input type="date" id="checkin" name="checkin" required>
+
+      <label for="checkout">Check-out Date</label>
+      <input type="date" id="checkout" name="checkout" required>
+
+      <label for="roomtype">Room Type</label>
+      <select id="roomtype" name="roomtype" required>
+        <option value="">Select a room</option>
+        <option value="Deluxe">Deluxe Room</option>
+        <option value="Suite">Suite</option>
+        <option value="Standard">Standard Room</option>
+      </select>
+
+      <button type="submit">Reserve Room</button>
+    </form>
+
+    <div id="message"></div>
+
+    <h2>Current Reservations</h2>
+    <table id="reservationTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Check-in</th>
+          <th>Check-out</th>
+          <th>Room Type</th>
+          <th>Booked At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Reservations will load here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    async function loadReservations() {
+      const res = await fetch('http://localhost:3000/admin/reservations');
+      const reservations = await res.json();
+
+      const tableBody = document.querySelector("#reservationTable tbody");
+      tableBody.innerHTML = "";
+
+      reservations.forEach(r => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${r.name}</td>
+          <td>${r.email}</td>
+          <td>${r.checkin}</td>
+          <td>${r.checkout}</td>
+          <td>${r.roomtype}</td>
+          <td>${new Date(r.time).toLocaleString()}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    document.getElementById("adminForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const form = e.target;
+
+      const data = {
+        name: form.name.value,
+        email: form.email.value,
+        checkin: form.checkin.value,
+        checkout: form.checkout.value,
+        roomtype: form.roomtype.value
+      };
+
+      const res = await fetch('http://localhost:3000/reserve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const msgDiv = document.getElementById("message");
+      if (res.ok) {
+        msgDiv.textContent = "✅ Reservation successful!";
+        msgDiv.className = "success";
+        form.reset();
         loadReservations();
-        </script>
-    </body>
+      } else {
+        msgDiv.textContent = "❌ Reservation failed.";
+        msgDiv.className = "error";
+      }
+    };
+
+    // Load reservations on page load
+    loadReservations();
+  </script>
+</body>
 </html>
