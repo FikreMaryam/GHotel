@@ -11,12 +11,12 @@
       margin: 0;
       padding: 20px;
     }
-    h1 {
+    h1, h2 {
       text-align: center;
       color: #333;
     }
     .admin-container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
       background: #fff;
       padding: 24px;
@@ -82,6 +82,7 @@
   <div class="admin-container">
     <h1>Reception / Admin Panel</h1>
 
+    <!-- Reservation Form -->
     <form id="adminForm">
       <label for="name">Guest Full Name</label>
       <input type="text" id="name" name="name" required>
@@ -96,18 +97,14 @@
       <input type="date" id="checkout" name="checkout" required>
 
       <label for="roomtype">Room Type</label>
-      <select id="roomtype" name="roomtype" required>
-        <option value="">Select a room</option>
-        <option value="Deluxe">Deluxe Room</option>
-        <option value="Suite">Suite</option>
-        <option value="Standard">Standard Room</option>
-      </select>
+      <select id="roomtype" name="roomtype" required></select>
 
       <button type="submit">Reserve Room</button>
     </form>
 
     <div id="message"></div>
 
+    <!-- Reservations Table -->
     <h2>Current Reservations</h2>
     <table id="reservationTable">
       <thead>
@@ -120,9 +117,25 @@
           <th>Booked At</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Reservations will load here -->
-      </tbody>
+      <tbody></tbody>
+    </table>
+
+    <!-- Room Management -->
+    <h2>Manage Rooms</h2>
+    <form id="roomForm">
+      <label for="roomName">Room Type</label>
+      <input type="text" id="roomName" name="roomName" required>
+      <button type="submit">Add Room</button>
+    </form>
+
+    <table id="roomTable">
+      <thead>
+        <tr>
+          <th>Room Type</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
     </table>
   </div>
 
@@ -145,6 +158,30 @@
           <td>${new Date(r.time).toLocaleString()}</td>
         `;
         tableBody.appendChild(row);
+      });
+    }
+
+    async function loadRooms() {
+      const res = await fetch('http://localhost:3000/admin/rooms');
+      const rooms = await res.json();
+
+      // Populate reservation dropdown
+      const roomSelect = document.getElementById("roomtype");
+      roomSelect.innerHTML = `<option value="">Select a room</option>`;
+      rooms.forEach(room => {
+        roomSelect.innerHTML += `<option value="${room}">${room}</option>`;
+      });
+
+      // Populate room management table
+      const roomTableBody = document.querySelector("#roomTable tbody");
+      roomTableBody.innerHTML = "";
+      rooms.forEach(room => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${room}</td>
+          <td><button onclick="removeRoom('${room}')">Remove</button></td>
+        `;
+        roomTableBody.appendChild(row);
       });
     }
 
@@ -178,8 +215,32 @@
       }
     };
 
-    // Load reservations on page load
+    document.getElementById("roomForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const roomName = document.getElementById("roomName").value;
+
+      const res = await fetch('http://localhost:3000/admin/rooms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ room: roomName })
+      });
+
+      if (res.ok) {
+        document.getElementById("roomName").value = "";
+        loadRooms();
+      }
+    };
+
+    async function removeRoom(room) {
+      const res = await fetch('http://localhost:3000/admin/rooms/' + encodeURIComponent(room), {
+        method: 'DELETE'
+      });
+      if (res.ok) loadRooms();
+    }
+
+    // Load data on page load
     loadReservations();
+    loadRooms();
   </script>
 </body>
 </html>

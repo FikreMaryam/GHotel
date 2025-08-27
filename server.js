@@ -8,60 +8,128 @@ const path = require("path");
 
 const app = express();
 const PORT = 3000;
-const FILE_PATH = "reservations.xlsx";
 
-app.use(cors());
+const RES_FILE = path.join(__dirname, "reservations.xlsx");
+const ROOM_FILE = path.join(__dirname, "rooms.xlsx");
+
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+}));
 app.use(bodyParser.json());
 
-// Serve static files (HTML, CSS, JS, images)
+// Serve HTML/CSS/JS/images from this folder
 app.use(express.static(path.join(__dirname)));
 
-// 🔹 Load reservations from Excel
+/* ----------------------- Helpers ----------------------- */
+function ensureSheet(filePath, sheetName, initialRows) {
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet(initialRows);
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  XLSX.writeFile(wb, filePath);
+}
+
+/* Reservations (stored as array of objects) */
 function loadReservations() {
-  if (!fs.existsSync(FILE_PATH)) {
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet([]);
-    XLSX.utils.book_append_sheet(wb, ws, "Reservations");
-    XLSX.writeFile(FILE_PATH);
+  if (!fs.existsSync(RES_FILE)) {
+    ensureSheet(RES_FILE, "Reservations", []);
     return [];
   }
-  const wb = XLSX.readFile(FILE_PATH);
+  const wb = XLSX.readFile(RES_FILE);
   const ws = wb.Sheets["Reservations"];
-  return XLSX.utils.sheet_to_json(ws) || [];
+  return ws ? (XLSX.utils.sheet_to_json(ws) || []) : [];
 }
-
-// 🔹 Save reservations to Excel
-function saveReservations(data) {
+function saveReservations(rows) {
   const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.json_to_sheet(data);
+  const ws = XLSX.utils.json_to_sheet(rows);
   XLSX.utils.book_append_sheet(wb, ws, "Reservations");
-  XLSX.writeFile(wb, FILE_PATH);
+  XLSX.writeFile(wb, RES_FILE);
 }
 
-// 🔹 API route: Get all reservations
+/* Rooms (stored as array of strings under column `room`) */
+function loadRooms() {
+  if (!fs.existsSync(ROOM_FILE)) {
+    ensureSheet(ROOM_FILE, "Rooms", [
+      { room: "Deluxe Room" },
+      { room: "Suite" },
+      { room: "Standard Room" },
+    ]);
+  }
+  const wb = XLSX.readFile(ROOM_FILE);
+  const ws = wb.Sheets["Rooms"];
+  const rows = ws ? (XLSX.utils.sheet_to_json(ws) || []) : [];
+  // Support old shape {type: "..."} too:
+  return rows.map(r => (r.room || r.type || "")).filter(Boolean);
+}
+function saveRooms(list) {
+  const rows = list.map(name => ({ room: name }));
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet(rows);
+  XLSX.utils.book_append_sheet(wb, ws, "Rooms");
+  XLSX.writeFile(wb, ROOM_FILE);
+}
+
+/* ----------------------- API ----------------------- */
+// Reservations
 app.get("/admin/reservations", (req, res) => {
-  const reservations = loadReservations();
-  res.json(reservations);
+  res.json(loadReservations());
 });
 
-// 🔹 API route: Add new reservation
 app.post("/reserve", (req, res) => {
+  const { name, email, checkin, checkout, roomtype } = req.body || {};
+  if (!name || !email || !checkin || !checkout || !roomtype) {
+    return res.status(400).json({ success: false, message: "Missing fields" });
+  }
   const reservations = loadReservations();
-  const newReservation = {
-    name: req.body.name,
-    email: req.body.email,
-    checkin: req.body.checkin,
-    checkout: req.body.checkout,
-    roomtype: req.body.roomtype,
-    time: new Date().toISOString()
-  };
-  reservations.push(newReservation);
+  reservations.push({
+    name: String(name).trim(),
+    email: String(email).trim(),
+    checkin,
+    checkout,
+    roomtype,
+    time: new Date().toISOString(),
+  });
   saveReservations(reservations);
   res.json({ success: true, message: "Reservation saved" });
 });
 
-// 🔹 Optional: Catch-all route to serve index.html for /
-app.get("/", (req, res) => {
+// Rooms (matches your admin.html)
+app.get("/admin/rooms", (req, res) => {
+  res.json(loadRooms());
+});
+
+app.post("/admin/rooms", (req, res) => {
+  const { room } = req.body || {};
+  const name = (room || "").trim();
+  if (!name) {
+    return res.status(400).json({ success: false, message: "Room name required" });
+  }
+  const rooms = loadRooms();
+  const exists = rooms.some(r => r.toLowerCase() === name.toLowerCase());
+  if (exists) {
+    return res.status(409).json({ success: false, message: "Room already exists" });
+  }
+  rooms.push(name);
+  saveRooms(rooms);
+  res.json({ success: true, message: "Room added", room: name });
+});
+
+app.delete("/admin/rooms/:room", (req, res) => {
+  const name = decodeURIComponent(req.params.room || "").trim();
+  if (!name) return res.status(400).json({ success: false, message: "Room name missing" });
+
+  const rooms = loadRooms();
+  const remaining = rooms.filter(r => r.toLowerCase() !== name.toLowerCase());
+  if (remaining.length === rooms.length) {
+    return res.status(404).json({ success: false, message: "Room not found" });
+  }
+  saveRooms(remaining);
+  res.json({ success: true, message: "Room deleted", room: name });
+});
+
+/* ----------------------- Root ----------------------- */
+app.get("/", (_req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
